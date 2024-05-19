@@ -5,6 +5,7 @@ use std::os::unix::fs as unix_fs;
 use std::process::{Command, exit};
 use std::io::Write;
 
+
 fn main() -> Result<()> {
     setup_sandbox_environment()?;
 
@@ -32,6 +33,8 @@ fn setup_sandbox_environment() -> Result<()> {
 }
 
 fn execute_command(command: &str, command_args: &[String]) -> Result<()> {
+        unsafe { libc::unshare(libc::CLONE_NEWPID) };
+
     let output = Command::new(command)
         .args(command_args)
         .output()
