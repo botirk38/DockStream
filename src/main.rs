@@ -8,6 +8,7 @@ use std::io::Write;
 
 fn main() -> Result<()> {
     setup_sandbox_environment()?;
+    isolate_process()?;
 
     let args: Vec<_> = env::args().collect();
     if args.len() < 5 {
@@ -33,7 +34,6 @@ fn setup_sandbox_environment() -> Result<()> {
 }
 
 fn execute_command(command: &str, command_args: &[String]) -> Result<()> {
-        unsafe { libc::unshare(libc::CLONE_NEWPID) };
 
     let output = Command::new(command)
         .args(command_args)
@@ -48,5 +48,10 @@ fn execute_command(command: &str, command_args: &[String]) -> Result<()> {
     } else {
         exit(output.status.code().unwrap_or(1));
     }
+}
+
+fn isolate_process() -> Result<()> {
+    unsafe { libc::unshare(libc::CLONE_NEWPID) };
+    Ok(())
 }
 
