@@ -21,7 +21,7 @@ DockStream is a command-line utility designed to facilitate the management and i
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/botirk38/DockStream
-   cd dockstream
+   cd src
    ```
 
 2. **Build the project:**
