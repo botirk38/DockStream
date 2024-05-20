@@ -1,54 +1,55 @@
-[![progress-banner](https://backend.codecrafters.io/progress/docker/466911e8-aaf5-4488-8f0d-76b0ff1b12b9)](https://app.codecrafters.io/users/botirk38?r=2qF)
+# DockStream Container Tool
 
-This is a starting point for Rust solutions to the
-["Build Your Own Docker" Challenge](https://codecrafters.io/challenges/docker).
+DockStream is a command-line utility designed to facilitate the management and isolation of containerized applications, mimicking functionalities similar to Docker but with a streamlined focus on security and simplicity.
 
-In this challenge, you'll build a program that can pull an image from
-[Docker Hub](https://hub.docker.com/) and execute commands in it. Along the way,
-we'll learn about [chroot](https://en.wikipedia.org/wiki/Chroot),
-[kernel namespaces](https://en.wikipedia.org/wiki/Linux_namespaces), the
-[docker registry API](https://docs.docker.com/registry/spec/api/) and much more.
+## Features
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- **Image Pulling**: Efficiently pull images from Docker Hub, utilizing a secure authentication process.
+- **Sandbox Environment Setup**: Establish a secure, isolated sandbox environment for running containerized applications.
+- **Process Isolation**: Utilize Linux namespaces to ensure that each containerized application runs in its isolated process environment.
+- **Command Execution**: Execute commands within the isolated environment, allowing for controlled and secure operations.
 
-# Passing the first stage
+## Requirements
 
-The entry point for your Docker implementation is `src/main.rs`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+- Rust programming language
+- Cargo package manager
+- Access to Linux OS capabilities
+- Reqwest and serde_json for HTTP requests and JSON handling
 
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/botirk38/DockStream
+   cd dockstream
+   ```
+
+2. **Build the project:**
+   ```bash
+   cargo build --release
+   ```
+
+3. **Run the built executable:**
+   ```bash
+   ./src/your_docker.sh <args>
+   ```
+
+## Usage
+
+To use DockStream, you need to provide a series of arguments that specify the image, the command to execute, and any command arguments. Here is the basic syntax:
+
+```bash
+mydocker run alpine:latest /usr/local/bin/docker-explorer mypid
+
 ```
 
-That's all!
 
-# Stage 2 & beyond
+## Contributing
 
-Note: This section is for stages 2 and beyond.
+Contributions are welcome! Please fork the repository and submit pull requests with your features and bug fixes.
 
-You'll use linux-specific syscalls in this challenge. so we'll run your code
-_inside_ a Docker container.
+## License
 
-Please ensure you have [Docker installed](https://docs.docker.com/get-docker/)
-locally.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Next, add a [shell alias](https://shapeshed.com/unix-alias/):
 
-```sh
-alias mydocker='docker build -t mydocker . && docker run --cap-add="SYS_ADMIN" mydocker'
-```
-
-(The `--cap-add="SYS_ADMIN"` flag is required to create
-[PID Namespaces](https://man7.org/linux/man-pages/man7/pid_namespaces.7.html))
-
-You can now execute your program like this:
-
-```sh
-mydocker run alpine:latest /usr/local/bin/docker-explorer echo hey
-```
-
-This command compiles your Rust project, so it might be slow the first time you
-run it. Subsequent runs will be fast.
